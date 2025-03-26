@@ -1,6 +1,8 @@
 # Guia de instalación
 Guia de instalación para prueba tecnica
 
+
+
 ## Instalar SQL Server
 1. Instalar SQL Server
 2. Ejecutar en PowerShell o CMD
@@ -59,6 +61,7 @@ npm install express sequelize tedious mssql
 npm install --save-dev typescript @types/express @types/sequelize ts-node nodemon
 npm install --save-dev typescript ts-node-dev @types/express @types/node
 npm install --save-dev sequelize-cli
+npm install --save-dev @types/cors
 ```
 2. Crear un `tsconfig.json`
 
