@@ -231,6 +231,73 @@ down: async (queryInterface: QueryInterface) => {
   await queryInterface.removeConstraint("Tasks", "fk_tasks_project");
 }
 ```
+Agregar solo un unique a una columna
+
+```
+'use strict';
+
+/** @type {import('sequelize-cli').Migration} */
+module.exports = {
+  async up (queryInterface, Sequelize) {
+    // Verificar si la columna ya existe, si no la agregas
+    const columns = await queryInterface.describeTable('users');
+    if (!columns.email) {
+      await queryInterface.addColumn('users', 'email', {
+        type: Sequelize.STRING(128),
+        allowNull: false,
+      });
+    }
+
+    // Agregar la restricción UNIQUE en la columna `email`
+    await queryInterface.addConstraint('users', {
+      fields: ['email'],
+      type: 'unique',
+      name: 'unique_email_constraint', // Nombre del constraint, puede ser cualquier nombre único
+    });
+  },
+
+  async down (queryInterface, Sequelize) {
+    // Eliminar la restricción UNIQUE
+    await queryInterface.removeConstraint('users', 'unique_email_constraint');
+
+    // Eliminar la columna `email`
+    await queryInterface.removeColumn('users', 'email');
+  }
+};
+
+```
+
+añadir columna con el unique
+```
+'use strict';
+
+/** @type {import('sequelize-cli').Migration} */
+module.exports = {
+  async up (queryInterface, Sequelize) {
+     await queryInterface.addColumn("users", "email", {
+      type: Sequelize.STRING(128),
+      allowNull: false,
+    });
+
+    // Agregar la restricción UNIQUE en la columna `email`
+    await queryInterface.addConstraint("users", {
+      fields: ["email"],
+      type: "unique",
+      name: "unique_email_constraint", // Nombre del constraint, puede ser cualquier nombre único
+    });
+  },
+
+  async down (queryInterface, Sequelize) {
+     // Eliminar la restricción UNIQUE
+    await queryInterface.removeConstraint("users", "unique_email_constraint");
+
+    // Eliminar la columna `email`
+    await queryInterface.removeColumn("users", "email");
+  }
+};
+
+```
+
 Subir migracion
 ```
 npx sequelize-cli db:migrate
